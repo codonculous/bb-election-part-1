@@ -11,7 +11,7 @@ $(document).ready(function() {
     }).done(function(responseData){
 
       for (var i=0;i<responseData.candidates.length;i++) {
-        $('#election-results').append('<li>'+'name: '+ responseData.candidates[i].name + ', votes: '+ responseData.candidates[i].votes + '</li>');
+        $('#election-results').append("<li class='votes'>"+"name: "+ responseData.candidates[i].name + ", votes: "+ responseData.candidates[i].votes + "</li>");
         var voting_form = $("<form class='voting-form' action='https://bb-election-api.herokuapp.com/vote' method='POST'></form>");
         $(voting_form).append("<input type='hidden' name='name' value="+responseData.candidates[i].name+">");
         $(voting_form).append("<input type='submit' value='Submit'>");
@@ -36,6 +36,21 @@ $(document).ready(function() {
 
     }).fail(function(jqXHR, textStatus, errorThrown){
       console.log('error: '+errorThrown);
+    });
+
+    $('#refresh').click(function(){
+      $.ajax({
+        url: 'https://bb-election-api.herokuapp.com/',
+        method: 'GET',
+        dataType: 'json'
+
+      }).done(function(responseData){
+        console.log(  $($('.votes')[0]));
+        for (var j =0;j<responseData.length;j++)
+        $($('.votes')[j]).text("name: "+ responseData.candidates[j].name + ", votes: "+ responseData.candidates[j].votes);
+      });
+
+
     });
 
 
