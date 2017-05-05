@@ -22,12 +22,12 @@ $(document).ready(function() {
         e.preventDefault();
         console.log($(this).children('input[type=hidden]').val());
         console.log($(this).attr('method')+' to '+$(this).attr('action'));
+
         $.ajax({
           method:$(this).attr('method'),
           url: $(this).attr('action'),
           data:{name: $(this).children('input[type=hidden]').val()},
-        }).done(function(reData){
-          console.log(reData);
+        }).done(function(){
         }).fail(function(){
 
           console.log("Voting failed!");
@@ -45,9 +45,14 @@ $(document).ready(function() {
         dataType: 'json'
 
       }).done(function(responseData){
+        // debugger
         console.log(  $($('.votes')[0]));
-        for (var j =0;j<responseData.length;j++)
+        for (var j =0;j<responseData.candidates.length;j++) {
         $($('.votes')[j]).text("name: "+ responseData.candidates[j].name + ", votes: "+ responseData.candidates[j].votes);
+        // location.reload();
+        // $('body').append("<div id='refreshDiv'>v</div>");
+        // $('#refreshDiv').remove();
+        }
       });
 
 
