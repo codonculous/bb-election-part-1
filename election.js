@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+
     $.ajax({
       url: 'https://bb-election-api.herokuapp.com/',
       method: 'GET',
@@ -16,8 +18,26 @@ $(document).ready(function() {
         $('#election-results').append(voting_form);
       }
 
+      $('.voting-form').on('submit',function(e){
+        e.preventDefault();
+        console.log($(this).children('input[type=hidden]').val());
+        console.log($(this).attr('method')+' to '+$(this).attr('action'));
+        $.ajax({
+          method:$(this).attr('method'),
+          url: $(this).attr('action'),
+          data:{name: $(this).children('input[type=hidden]').val()},
+        }).done(function(reData){
+          console.log(reData);
+        }).fail(function(){
+
+          console.log("Voting failed!");
+        });
+      });
+
     }).fail(function(jqXHR, textStatus, errorThrown){
       console.log('error: '+errorThrown);
     });
+
+
 
 });
